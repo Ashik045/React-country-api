@@ -1,0 +1,37 @@
+import React, { useEffect, useState } from 'react';
+import Countries from './Countries';
+
+// const GlobalContext = React.createContext()
+const GlobalContext = () => {
+    const { countries, setCountry } = useState([]);
+
+    useEffect(() => {
+        fetch('https://restcountries.eu/rest/v2/all')
+            .then((res) => res.json())
+            // eslint-disable-next-line no-shadow
+            .then((countries) => {
+                setCountry(countries);
+                console.log(countries);
+            });
+    });
+
+    return countries.map((country) => {
+        const { name, population, flag, region, capital } = country;
+
+        return (
+            <GlobalContext.Provider
+                value={{
+                    name,
+                    population,
+                    region,
+                    capital,
+                    flag,
+                }}
+            >
+                <Countries />
+            </GlobalContext.Provider>
+        );
+    });
+};
+
+export default GlobalContext;
